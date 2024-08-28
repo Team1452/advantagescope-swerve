@@ -15,6 +15,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.vision.Vision;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -31,6 +32,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
+  private Vision vision;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -87,11 +89,37 @@ public class Robot extends LoggedRobot {
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
+
+    vision = new Vision();
   }
 
   /** This function is called periodically during all modes. */
   @Override
   public void robotPeriodic() {
+    // Correct pose estimate with vision measurements
+    var visionEst = vision.getEstimatedGlobalPose();
+    visionEst.ifPresent(
+        est -> {
+          var estPose = est.estimatedPose.toPose2d();
+          // Change our trust in the measurement based on the tags we can see
+          var estStdDevs = vision.getEstimationStdDevs(estPose);
+
+          // ADAPT THIS: drivetrain.addVisionMeasurement(est.estimatedPose.toPose2d(),
+          // est.timestampSeconds, estStdDevs);
+        });
+
+    /*
+    // Apply a random offset to pose estimator to test vision correction
+    if (controller.getBButtonPressed()) {
+      var trf =
+        new Transform2d(
+          new Translation2d(rand.nextDouble() * 4 - 2, rand.nextDouble() * 4 - 2),
+          new Rotation2d(rand.nextDouble() * 2 * Math.PI)
+        );
+      drivetrain.resetPose(drivetrain.getPose().plus(trf), false);
+    }
+    /**/
+
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled commands, running already-scheduled commands, removing
     // finished or interrupted commands, and running subsystem periodic() methods.

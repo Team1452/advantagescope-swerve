@@ -64,10 +64,10 @@ public class RobotContainer {
         drive =
             new Drive(
                 new GyroIOPigeon2(false),
-                new ModuleIOSparkMax(0, 0.0), // offsets must be calibrated!!
-                new ModuleIOSparkMax(1, 0.0),
-                new ModuleIOSparkMax(2, 0.0),
-                new ModuleIOSparkMax(3, 0.0));
+                new ModuleIOSparkMax(0),
+                new ModuleIOSparkMax(1),
+                new ModuleIOSparkMax(2),
+                new ModuleIOSparkMax(3));
         flywheel = new Flywheel(new FlywheelIOSparkMax());
         // drive = new Drive(
         // new GyroIOPigeon2(true),
