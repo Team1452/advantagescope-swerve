@@ -22,6 +22,7 @@ import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Constants;
 import java.util.OptionalDouble;
 import java.util.Queue;
 
@@ -56,7 +57,7 @@ public class ModuleIOSparkMax implements ModuleIO {
   private final boolean isTurnMotorInverted = true;
   private final Rotation2d absoluteEncoderOffset;
 
-  public ModuleIOSparkMax(int index, double offset) {
+  public ModuleIOSparkMax(int index) {
     /*switch (index) {
       case 0:
         driveSparkMax = new CANSparkMax(1, MotorType.kBrushless);
@@ -90,7 +91,7 @@ public class ModuleIOSparkMax implements ModuleIO {
     turnSparkMax = new CANSparkMax(index * 10 + 1, MotorType.kBrushless);
     driveSparkMax = new CANSparkMax(index * 10 + 2, MotorType.kBrushless);
     // turnAbsoluteEncoder = new AnalogInput(3);
-    absoluteEncoderOffset = new Rotation2d(offset); // MUST BE CALIBRATED
+    absoluteEncoderOffset = new Rotation2d(Constants.swerveOffsets[index]); // MUST BE CALIBRATED
 
     driveSparkMax.restoreFactoryDefaults();
     turnSparkMax.restoreFactoryDefaults();
