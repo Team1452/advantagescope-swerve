@@ -34,6 +34,7 @@ import edu.wpi.first.math.numbers.N3;
 public final class Constants {
   public static final Mode currentMode = Mode.SIM;
   public static final double swerveEncoderOffsets[] = {0.0, 0.0, 0.0, 0.0};
+  public static final double driveBase[] = {28.0, 28.0};
 
   public static enum Mode {
     /** Running on a real robot. */
