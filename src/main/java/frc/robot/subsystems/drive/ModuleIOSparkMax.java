@@ -58,6 +58,10 @@ public class ModuleIOSparkMax implements ModuleIO {
   private final Rotation2d absoluteEncoderOffset;
 
   public ModuleIOSparkMax(int index) {
+    this(index, index * 10, index * 10 + 1, index * 10 + 2);
+  }
+
+  public ModuleIOSparkMax(int index, int CANcoderID, int turnID, int driveID) {
     /*switch (index) {
       case 0:
         driveSparkMax = new CANSparkMax(1, MotorType.kBrushless);
@@ -87,9 +91,9 @@ public class ModuleIOSparkMax implements ModuleIO {
         throw new RuntimeException("Invalid module index");
     }*/
 
-    turnCancoder = new CANcoder(index * 10, "rio");
-    turnSparkMax = new CANSparkMax(index * 10 + 1, MotorType.kBrushless);
-    driveSparkMax = new CANSparkMax(index * 10 + 2, MotorType.kBrushless);
+    turnCancoder = new CANcoder(CANcoderID, "rio");
+    turnSparkMax = new CANSparkMax(turnID, MotorType.kBrushless);
+    driveSparkMax = new CANSparkMax(driveID, MotorType.kBrushless);
     // turnAbsoluteEncoder = new AnalogInput(3);
     absoluteEncoderOffset =
         new Rotation2d(Constants.swerveEncoderOffsets[index]); // MUST BE CALIBRATED
