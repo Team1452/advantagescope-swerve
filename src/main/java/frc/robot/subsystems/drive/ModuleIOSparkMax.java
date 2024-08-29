@@ -40,8 +40,8 @@ import java.util.Queue;
  */
 public class ModuleIOSparkMax implements ModuleIO {
   // Gear ratios for SDS MK4i L2, adjust as necessary
-  private static final double DRIVE_GEAR_RATIO = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0);
-  private static final double TURN_GEAR_RATIO = 150.0 / 7.0;
+  private static final double DRIVE_GEAR_RATIO = Constants.driveGearRatio;
+  private static final double TURN_GEAR_RATIO = Constants.turnGearRatio;
 
   private final CANcoder turnCancoder;
   private final CANSparkMax driveSparkMax;
@@ -91,7 +91,8 @@ public class ModuleIOSparkMax implements ModuleIO {
     turnSparkMax = new CANSparkMax(index * 10 + 1, MotorType.kBrushless);
     driveSparkMax = new CANSparkMax(index * 10 + 2, MotorType.kBrushless);
     // turnAbsoluteEncoder = new AnalogInput(3);
-    absoluteEncoderOffset = new Rotation2d(Constants.swerveOffsets[index]); // MUST BE CALIBRATED
+    absoluteEncoderOffset =
+        new Rotation2d(Constants.swerveEncoderOffsets[index]); // MUST BE CALIBRATED
 
     driveSparkMax.restoreFactoryDefaults();
     turnSparkMax.restoreFactoryDefaults();
