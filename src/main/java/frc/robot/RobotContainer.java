@@ -34,6 +34,7 @@ import frc.robot.subsystems.flywheel.Flywheel;
 import frc.robot.subsystems.flywheel.FlywheelIO;
 import frc.robot.subsystems.flywheel.FlywheelIOSim;
 import frc.robot.subsystems.flywheel.FlywheelIOSparkMax;
+import frc.robot.subsystems.vision.Vision;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
@@ -45,8 +46,9 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
  */
 public class RobotContainer {
   // Subsystems
-  private final Drive drive;
+  public final Drive drive;
   private final Flywheel flywheel;
+  private Vision vision;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -103,6 +105,8 @@ public class RobotContainer {
         break;
     }
 
+    vision = new Vision();
+
     // Set up auto routines
     NamedCommands.registerCommand(
         "Run Flywheel",
@@ -135,6 +139,32 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+  }
+
+  public void updateVision() {
+    // Correct pose estimate with vision measurements
+    var visionEst = vision.getEstimatedGlobalPose();
+    visionEst.ifPresent(
+        est -> {
+          var estPose = est.estimatedPose.toPose2d();
+          // Change our trust in the measurement based on the tags we can see
+          var estStdDevs = vision.getEstimationStdDevs(estPose);
+
+          drive.addVisionMeasurement(
+              est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+        });
+
+    /*
+    // Apply a random offset to pose estimator to test vision correction
+    if (controller.getBButtonPressed()) {
+      var trf =
+        new Transform2d(
+          new Translation2d(rand.nextDouble() * 4 - 2, rand.nextDouble() * 4 - 2),
+          new Rotation2d(rand.nextDouble() * 2 * Math.PI)
+        );
+      drivetrain.resetPose(drivetrain.getPose().plus(trf), false);
+    }
+    /**/
   }
 
   /**

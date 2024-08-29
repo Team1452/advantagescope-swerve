@@ -34,7 +34,9 @@ import edu.wpi.first.math.numbers.N3;
 public final class Constants {
   public static final Mode currentMode = Mode.SIM;
   public static final int pigeonCANID = 2;
-  public static final double swerveEncoderOffsets[] = {-79.0, -167.0, 145.0, 166.0}; //fl, fr, br, bl (I think...)
+  public static final double swerveEncoderOffsets[] = {
+    -79.0, -167.0, 145.0, 166.0
+  }; // fl, fr, br, bl (I think...)
   public static final double driveBase[] = {28.0, 28.0};
   public static final double driveGearRatio = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0);
   public static final double turnGearRatio = 150.0 / 7.0;
