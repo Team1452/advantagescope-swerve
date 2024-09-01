@@ -58,7 +58,7 @@ public class ModuleIOSparkMax implements ModuleIO {
   private final Rotation2d absoluteEncoderOffset;
 
   public ModuleIOSparkMax(int index) {
-    this(index, index * 10, index * 10 + 1, index * 10 + 2);
+    this((index + 1), (index + 1) * 10, (index + 1) * 10 + 1, (index + 1) * 10 + 2);
   }
 
   public ModuleIOSparkMax(int index, int CANcoderID, int turnID, int driveID) {
